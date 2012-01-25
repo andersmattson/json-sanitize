@@ -64,13 +64,7 @@ function cast(o, s) {
 }
 
 return function(obj, schema) {
-	
-	var error = null;
-
-	var res = cast(obj, schema);
-	
-	return res;
-	
+	return cast(obj, schema);
 };
 
 })();
