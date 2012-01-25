@@ -10,7 +10,7 @@ var filterJson = function(obj, schema, exclude) {
 	var res = cast(obj, schema, exclude);
 	
 	if(error) {
-		console.log('Error found', error);
+//		console.log('Error found', error);
 	}
 	
 	return res;
@@ -32,23 +32,22 @@ var filterJson = function(obj, schema, exclude) {
 
 		var ret = null, path, i, j;
 		
-		if(o === null){}
-		else if(is(s, "object") && is(o, "object")) { //s.constructor === Object && o.constructor === Object) {
+		if(o === null || is(o, 'function')){}
+		else if(is(s, "object") && is(o, "object")) {
 			ret = {};
 	
 			for(path in s) {
 				if(o[path] === null)
 					ret[path] = null;
-				else if(o[path] !== undefined && (i = cast(o[path], s[path], e))) {
+				else if(o[path] !== undefined && (i = cast(o[path], s[path], e)))
 					ret[path] = i;
-				}
 			}
 		}
 		else if(s.constructor == Array) {
 			ret = [];
 			if(o.constructor === Array) {
 				for(i in o) {
-					if((j = cast(o[i], s[0], e)) || o[i] === null) {
+					if((j = cast(o[i], s[0], e)) /*|| o[i] === null*/) {
 						ret.push(j);
 					}
 				}
