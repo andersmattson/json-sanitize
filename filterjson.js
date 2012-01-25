@@ -54,11 +54,8 @@ var filterJson = function(obj, schema, exclude) {
 				}
 				var ret2 = filterNulls(ret);
 				ret = ret2;
-//				console.log(ret, ret2);
 			}
 		}
-		else if(Object.prototype.toString.call(s) == '[object Function]' && s.toString().substr(-17) != '{ [native code] }')
-			ret = s.call(o, o);
 		else if(s === String)
 			ret = o.toString();
 		else if(s === Number)
@@ -73,6 +70,8 @@ var filterJson = function(obj, schema, exclude) {
 			else if(o.constructor === String)
 				ret = new Date(o);
 		}
+		else if(is(s, 'function') && !/\{\s*\[native\scode\]\s*\}$/.test(s.toString().substr(-20)))
+			ret = s.call(o, o);
 		else if(Object.prototype.toString.call(s) == '[object RegExp]') {
 			if(o.constructor === String && (i = o.match(s)))
 				ret = i[0];

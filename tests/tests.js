@@ -6,7 +6,8 @@ var structure = {
 	comments:[{
 		commentator: Number,
 		text: String,
-		id: Number
+		id: Number,
+		votes: [Number]
 	}],
 	ids: [Number],
 	user: {
@@ -30,7 +31,8 @@ var testObject = {
 		{
 			id: '12',
 			commentator: 53,
-			text: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor.'
+			text: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor.',
+			votes: [1243, 123423, 412342324]
 		},{
 			id: 13,
 			commentator: 19,
@@ -64,11 +66,13 @@ test('Casting and filtering tests', function(){
 	// QUnit tests
 	var result = filterJson(testObject, structure, true);
 	equal(result.name, 'Blog post', 'result.name');
+	equal(result.created.getTime(), 1231231231231, "result.created");
 	deepEqual(result.comments, [
 		{
 			id: 12,
 			commentator: 53,
-			text: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor.'
+			text: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor.',
+			votes: [1243, 123423, 412342324]
 		},{
 			id: 13,
 			commentator: 19,
@@ -81,13 +85,13 @@ test('Casting and filtering tests', function(){
 		email2: 'asdasd@example.com',
 		isadmin: true
 	}, 'user');
+	
 	equal(result.crap, undefined, 'no crap');
 	equal(result.len, 6, 'length');
 	deepEqual(result.strs, ["a", "b", "true"], "result.strs");
 	deepEqual(result.ids, [1,2,123], "result.ids");
-	deepEqual(result.arraytest, testObject.arraytest, "result.arraytest");
+	deepEqual(result.arraytest, [1,2,3], "result.arraytest");
 	deepEqual(result.arraytest2, 12, "result.arraytest2");
-	console.log(result.arraytest2);
 	deepEqual(result.arrtest3, [[],[1,2]], "arrtest3 is correct");
 });
 
