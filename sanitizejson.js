@@ -1,19 +1,21 @@
-var filterJson = (function(){
+var sanitizeJson = (function(){
 
 function is(o, type) {
 	return Object.prototype.toString.call(o).toLowerCase() == "[object "+type+"]";
-}
+};
 
 function filterNulls(arr) {
 	var ret = [];
+
 	for(var i = 0, l = arr.length; i < l; i++) {
 		if(arr[i] !== null)
 			ret.push(arr[i]);
 	}
+	
 	return ret;
-}
+};
 
-function cast(o, s) {
+function sanitize(o, s) {
 
 	var ret = null, path, i, j;
 	
@@ -24,15 +26,15 @@ function cast(o, s) {
 		for(path in s) {
 			if(o[path] === null)
 				ret[path] = null;
-			else if(o[path] !== undefined && (i = cast(o[path], s[path])))
+			else if(o[path] !== undefined && (i = sanitize(o[path], s[path])))
 				ret[path] = i;
 		}
 	}
-	else if(s.constructor == Array) {
+	else if(s.constructor === Array) {
 		ret = [];
 		if(o.constructor === Array) {
 			for(i in o) {
-				if(j = cast(o[i], s[0]))
+				if(j = sanitize(o[i], s[0]))
 					ret.push(j);
 			}
 			var ret2 = filterNulls(ret);
@@ -61,13 +63,13 @@ function cast(o, s) {
 	}
 	
 	return ret;
-}
+};
 
 return function(obj, schema) {
-	return cast(obj, schema);
+	return sanitize(obj, schema);
 };
 
 })();
 
 if(module)
-	module.exports = filterJson;
+	module.exports = sanitizeJson;

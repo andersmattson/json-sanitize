@@ -1,4 +1,6 @@
 
+
+
 // The structure to test against
 var structure = {
 	name: String,
@@ -41,9 +43,9 @@ var testObject = {
 	],
 	ids: [1, 2, '123', 'anders', true],
 	user: {
-		name: 'Anders Mattson',
-		email: 'asdasd',
-		email2: 'asdasd@example.com',
+		name: 'Name of author',
+		email: 'user',
+		email2: 'user@example.com',
 		isadmin: true,
 		thisiscrap: 'Nonsens'
 	},
@@ -64,30 +66,31 @@ var testObject = {
 test('Casting and filtering tests', function(){
 
 	// QUnit tests
-	var result = filterJson(testObject, structure, true);
+	var result = sanitizeJson(testObject, structure, true);
 	equal(result.name, 'Blog post', 'result.name');
 	equal(result.created.getTime(), 1231231231231, "result.created");
 	deepEqual(result.comments, [
 		{
-			id: 12,
 			commentator: 53,
 			text: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor.',
+			id: 12,
 			votes: [1243, 123423, 412342324]
 		},{
-			id: 13,
 			commentator: 19,
-			text: 'glk jhsdf glsdkjfhglsdkfjgh sldkfjhg sldkfjgh slkdfjh sdfjg'
+			text: 'glk jhsdf glsdkjfhglsdkfjgh sldkfjhg sldkfjgh slkdfjh sdfjg',
+			id: 13
 		}
 	], "comments");
 	
 	deepEqual(result.user, {
-		name: 'Anders Mattson',
-		email2: 'asdasd@example.com',
+		name: 'Name of author',
+		email2: 'user@example.com',
 		isadmin: true
 	}, 'user');
 	
 	equal(result.crap, undefined, 'no crap');
 	equal(result.len, 6, 'length');
+	
 	deepEqual(result.strs, ["a", "b", "true"], "result.strs");
 	deepEqual(result.ids, [1,2,123], "result.ids");
 	deepEqual(result.arraytest, [1,2,3], "result.arraytest");
